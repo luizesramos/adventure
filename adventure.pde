@@ -2,7 +2,6 @@ Directional directional;
 Dude dude;
 Spear spear;
 
-
 void setup(){
   size(400, 400);
   directional = new Directional(width-25, height-25, 50);

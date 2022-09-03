@@ -11,7 +11,6 @@ public class Dude {
   int getY() { return y; }
   int getSize() { return size; }
 
-
     void draw() {
     fill(0xffffff);
     rect(x, y, size, size);
