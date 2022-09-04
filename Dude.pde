@@ -1,42 +1,59 @@
 public class Dude {
-  private int x = 200, y = 200, size = 15;
+  private int x = 200, y = 200, size;
   private int vx = 0, vy = 0, speed = 5;
   private Directional directional;
-  
-  Dude(Directional directional) {
+  private int[] rgb = { 255, 255, 255 };
+
+  Dude(int size, Directional directional) {
+    this.size = size;
     this.directional = directional;
   }
 
-  int getX() { return x; }
-  int getY() { return y; }
-  int getSize() { return size; }
+  int getX() {
+    return x;
+  }
+  int getY() {
+    return y;
+  }
+  int getSize() {
+    return size;
+  }
 
-    void draw() {
-    fill(0xffffff);
+  void setColor(int[] rgb) {
+    this.rgb = rgb;
+  }
+
+  void draw() {
+    fill(rgb[0], rgb[1], rgb[2]);
+    stroke(rgb[0], rgb[1], rgb[2]);
+
     rect(x, y, size, size);
-    if(directional.isUp()) {
+    
+    if (directional.isUp()) {
       vy = -speed;
-    } else if(directional.isDown()) {
+    } else if (directional.isDown()) {
       vy = speed;
     } else {
-      if(vy > 0) {
+      if (vy > 0) {
         vy -= 1;
       } else {
         vy = 0;
       }
     }
-    if(directional.isLeft()) {
+    if (directional.isLeft()) {
       vx = -speed;
-    } else if(directional.isRight()) {
+    } else if (directional.isRight()) {
       vx = speed;
     } else {
-      if(vx > 0) {
+      if (vx > 0) {
         vx -= 1;
       } else {
         vx = 0;
       }
     }
-    x = (x + vx + width) % width;
-    y = (y + vy + height) % height;
+    
+    int ghostAffordance = 20;
+    x = (x + vx + width + ghostAffordance) % (width + ghostAffordance);
+    y = (y + vy + height + ghostAffordance) % (height + ghostAffordance);
   }
 }

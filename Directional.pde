@@ -3,19 +3,29 @@ public class Directional {
   private boolean up = false, down = false;
   private boolean left = false, right = false;
   private boolean action = false;
-  
+
   Directional(int x, int y, int size) {
     this.x = x;
     this.y = y;
     this.size = size;
   }
-  
-  public boolean getAction() { return action; }
-  public boolean isUp() { return up; }
-  public boolean isDown() { return down; }
-  public boolean isLeft() { return left; }
-  public boolean isRight() { return right; }
-  
+
+  public boolean getAction() {
+    return action;
+  }
+  public boolean isUp() {
+    return up;
+  }
+  public boolean isDown() {
+    return down;
+  }
+  public boolean isLeft() {
+    return left;
+  }
+  public boolean isRight() {
+    return right;
+  }
+
   void keyPressed(int keyCode, char key) {
     if (keyCode == 38) {
       up = true;
@@ -43,10 +53,11 @@ public class Directional {
       action = false;
     }
   }
-  
+
   void draw() {
-    fill(0xffffff);
-    stroke(0x000000);
+    fill(255);
+    stroke(0);
+
     circle(x, y, size);
     float ts = 0.2 * size; // triangle side size
     float offset = 0.25 * size; // y offset for up/down; x offset for letf/right
@@ -62,14 +73,14 @@ public class Directional {
     // right
     activeFill(right);
     triangle(x+ts+offset, y, x+offset, y+ts, x+offset, y-ts);
-    
-    if(action) {
-      fill(0x000000);
+
+    if (action) {
+      fill(0);
       circle(x, y, size * 0.2);
     }
   }
-  
+
   private void activeFill(boolean isActive) {
-    fill(isActive ? 0x000000 : 0xffffff);
+    fill(isActive ? 0: 255);
   }
 }

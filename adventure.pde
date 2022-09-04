@@ -1,17 +1,22 @@
 Directional directional;
 Dude dude;
 Spear spear;
+Room room;
 
-void setup(){
+void setup() {
   size(400, 400);
-  directional = new Directional(width-25, height-25, 50);
-  dude = new Dude(directional);
+  directional = new Directional(width-25, height-25, 30);
+    
+  room = new Room(20);
+  
+  dude = new Dude(15, directional);
+  dude.setColor(room.rgb);
   spear = new Spear();
-  colorMode(RGB, 0xffffff);
+  colorMode(RGB);
 }
 
 void draw() {
-  background(33);
+  room.draw();
   directional.draw();
   spear.draw();
   dude.draw();
