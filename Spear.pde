@@ -1,7 +1,11 @@
 public class Spear {
   private final int DROPPED = 0, HELD = 1, DROPPING = 2;
-  private int x = 50, y = 50, size = 30, state = DROPPED;
+  private int x = 50, y = 50, size, state = DROPPED;
   private int holdX = 0, holdY = 0;
+  
+  Spear(int size) {
+    this.size = size;
+  }
 
   int getSize() {
     return size;

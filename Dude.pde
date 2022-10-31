@@ -3,6 +3,7 @@ public class Dude {
   private int vx = 0, vy = 0, speed = 5;
   private Directional directional;
   private int[] rgb = { 255, 255, 255 };
+  private Room room;
 
   Dude(int size, Directional directional) {
     this.size = size;
@@ -19,8 +20,9 @@ public class Dude {
     return size;
   }
 
-  void setColor(int[] rgb) {
-    this.rgb = rgb;
+  void enterRoom(Room room) {
+    this.rgb = room.rgb;
+    this.room = room;
   }
 
   void draw() {
@@ -28,7 +30,12 @@ public class Dude {
     stroke(rgb[0], rgb[1], rgb[2]);
 
     rect(x, y, size, size);
-    
+
+    updateVelocity();
+    move();
+  }
+
+  private void updateVelocity() {
     if (directional.isUp()) {
       vy = -speed;
     } else if (directional.isDown()) {
@@ -51,9 +58,29 @@ public class Dude {
         vx = 0;
       }
     }
-    
-    int ghostAffordance = 20;
-    x = (x + vx + width + ghostAffordance) % (width + ghostAffordance);
-    y = (y + vy + height + ghostAffordance) % (height + ghostAffordance);
+  }
+
+  private void move() {
+    final int ghostAffordance = 20;
+    int projectedX = (x + vx + width + ghostAffordance) % (width + ghostAffordance);
+    int projectedY = (y + vy + height + ghostAffordance) % (height + ghostAffordance);
+
+    if (room == null) {
+      x = projectedX;
+      y = projectedY;
+    }
+
+    if (!room.isCollision(projectedX, projectedY, size)) {
+      x = projectedX;
+      y = projectedY;
+    }
+
+    if (!room.isCollision(projectedX, y, size)) {
+      x = projectedX;
+    }
+
+    if (!room.isCollision(x, projectedY, size)) {
+      y = projectedY;
+    }
   }
 }

@@ -10,8 +10,9 @@ void setup() {
   room = new Room(20);
   
   dude = new Dude(15, directional);
-  dude.setColor(room.rgb);
-  spear = new Spear();
+  dude.enterRoom(room);
+  
+  spear = new Spear(25);
   colorMode(RGB);
 }
 
