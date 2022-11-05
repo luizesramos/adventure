@@ -29,9 +29,6 @@ public class WallWithDoor extends Wall {
 
   boolean isCollision(int pX, int pY, int size) {
     return isPointInRect(pX, pY, x, y, x + w, y + h) || isPointInRect(pX + size, pY + size, x, y, x + w, y + h);
-
-
-    return false;
   }
 
   void draw() {
