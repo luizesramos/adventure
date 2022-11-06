@@ -13,7 +13,7 @@ void setup() {
   dude = new Dude(20, directional);
   dude.enterRoom(room);
   
-  spear = new Spear(30 );
+  spear = new Spear(30);
   colorMode(RGB);
 }
 
