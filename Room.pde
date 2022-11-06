@@ -1,111 +1,55 @@
-public abstract class Wall {
-  final int x, y, w, h;
-
-  Wall(int x, int y, int w, int h) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-  }
-
-  abstract boolean isCollision(int pX, int pY, int size);
-  abstract void draw();
-
-  boolean isPointInRect(int pX, int pY, int rx1, int ry1, int rx2, int ry2) {
-    return (pX >= rx1 && pX < rx2) && (pY >= ry1 && pY < ry2);
-  }
-}
-
-public class WallWithDoor extends Wall {
-  private final boolean isHorizontal;
-  private final int doorWidth;
-
-  WallWithDoor(int x, int y, int w, int h) {
-    super(x, y, w, h);
-    isHorizontal = (w > h);
-    float factor = 0.27;
-    doorWidth = (int)(isHorizontal ? factor * w : factor * h);
-  }
-
-  boolean isCollision(int pX, int pY, int size) {
-    return isPointInRect(pX, pY, x, y, x + w, y + h) || isPointInRect(pX + size, pY + size, x, y, x + w, y + h);
-  }
-
-  void draw() {
-    if (isHorizontal) {
-      rect(x, y, x + (w >> 1) - (doorWidth >> 1), y + h);
-      rect(x + (w >> 1) + (doorWidth >> 1), y, x + w, y + h);
-    } else {
-      rect(x, y, x + w, y + (h >> 1) - (doorWidth >> 1));
-      rect(x, y + (h >> 1) + (doorWidth >> 1), x + w, y + h);
-    }
-  }
-}
-
-public class ClosedWall extends Wall {
-  ClosedWall(int x, int y, int w, int h) {
-    super(x, y, w, h);
-  }
-
-  boolean isCollision(int pX, int pY, int size) {
-    return isPointInRect(pX, pY, x, y, x + w, y + h) || isPointInRect(pX + size, pY + size, x, y, x + w, y + h);
-  }
-
-  void draw() {
-    rect(x, y, x + w, y + h);
-  }
-}
-
-
-// walls have coordinates, collision, door, entered door
-
 public class Room {
-  private int blockHeight, blockWidth;
   final int[] rgb = { (int)random(100, 255), (int)random(100, 255), (int)random(100, 255)};
-  private Wall[]  walls;
+  private Walls  walls;
 
-  Room(int wallThick) {
-    this.blockWidth = width / wallThick;
-    this.blockHeight = height / wallThick;
-
-    //walls = new Wall[] {
-    //  new ClosedWall(0, 0, width, blockHeight),
-    //  new ClosedWall(0, height - blockHeight, width, blockHeight),
-    //  new ClosedWall(0, 0, blockWidth, height),
-    //  new ClosedWall(width - blockWidth, 0, width - blockWidth, height)
-    //};
-
-    walls = new Wall[] {
-      new WallWithDoor(0, 0, width, blockHeight),
-      new WallWithDoor(0, height - blockHeight, width, blockHeight),
-      new WallWithDoor(0, 0, blockWidth, height),
-      new WallWithDoor(width - blockWidth, 0, width - blockWidth, height)
-    };
-
-    //walls = new Wall[] {
-    //  new ClosedWall(0, 0, width, blockHeight),
-    //  new WallWithDoor(0, height - blockHeight, width, blockHeight),
-    //  new WallWithDoor(0, 0, blockWidth, height),
-    //  new ClosedWall(width - blockWidth, 0, width - blockWidth, height)
-    //};
+  Room(int blockSize) {
+    walls = new Walls(blockSize);
+    
   }
-
-  boolean isCollision(int x, int y, int size) {
-    for (Wall wall : walls) {
-      if (wall.isCollision(x, y, size)) {
-        return true;
-      }
-    }
-    return false;
+  
+  Point collisionAdjusted(int x, int y, int size) {
+    // add doors
+    // when we walk through a door, the coordinates always wrap around
+    return walls.collisionAdjusted(x, y, size);
   }
 
   void draw() {
     background(33);
     fill(rgb[0], rgb[1], rgb[2]);
     stroke(rgb[0], rgb[1], rgb[2]);
+    walls.draw();
+  }
+}
 
-    for (Wall wall : walls) {
-      wall.draw();
+public class Walls {
+  private static final int dimension = 32;
+  
+  private int[][] blocks;
+  private int blockSize;
+
+  Walls(int blockSize) {
+      this.blockSize = blockSize;
+      blocks = new int[dimension][dimension];
+      
+      for (int i=0; i<dimension; i++) {
+        blocks[0][i] = 1;
+        blocks[dimension-1][i] = 1;
+        blocks[i][0] = 1;
+        blocks[i][dimension-1] = 1;
+      }
+  }
+  
+  Point collisionAdjusted(int x, int y, int size) {    
+    return new Point(x, y);
+  }
+  
+  void draw() {
+    for (int r = 0; r < dimension; r++) {
+      for (int c = 0; c < dimension; c++) {
+        if (blocks[r][c] == 1) {
+          rect(r * blockSize, c * blockSize, blockSize, blockSize);
+        }
+      }
     }
   }
 }

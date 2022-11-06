@@ -69,18 +69,9 @@ public class Dude {
       x = projectedX;
       y = projectedY;
     }
-
-    if (!room.isCollision(projectedX, projectedY, size)) {
-      x = projectedX;
-      y = projectedY;
-    }
-
-    if (!room.isCollision(projectedX, y, size)) {
-      x = projectedX;
-    }
-
-    if (!room.isCollision(x, projectedY, size)) {
-      y = projectedY;
-    }
-  }
+    
+    Point p = room.collisionAdjusted(projectedX, projectedY, size);
+    x = p.getX();
+    y = p.getY();
+ }
 }

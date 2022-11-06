@@ -4,15 +4,16 @@ Spear spear;
 Room room;
 
 void setup() {
-  size(400, 400);
-  directional = new Directional(width-25, height-25, 30);
-    
+  size(640, 640);
+  
   room = new Room(20);
   
-  dude = new Dude(15, directional);
+  directional = new Directional(width - 25, height - 25, 30);
+  
+  dude = new Dude(20, directional);
   dude.enterRoom(room);
   
-  spear = new Spear(25);
+  spear = new Spear(30 );
   colorMode(RGB);
 }
 
